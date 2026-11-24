@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>امتحان لغة إنجليزية</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+        }
+    </script>
+    <!-- Google Fonts: Cairo & Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- EmailJS SDK -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <style>
+        body { font-family: 'Cairo', sans-serif; }
+        .ltr-text { font-family: 'Poppins', sans-serif; direction: ltr; text-align: left; }
+        .glass-card {
+            backdrop-filter: blur(12px);
+        }
+        .rating-selected {
+            background-color: #dc2626 !important;
+            color: #ffffff !important;
+            border-color: #dc2626 !important;
+            box-shadow: 0 4px 12px rgba(220, 38, 38, 0.25);
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-red-50 via-rose-50/70 to-red-100/60 text-red-950 dark:from-slate-950 dark:via-slate-900 dark:to-slate-900 dark:text-slate-100 min-h-screen transition-colors duration-300">
+
+    <!-- شريط التنقل العلوي -->
+    <header class="glass-card bg-white/85 dark:bg-slate-900/85 shadow-sm sticky top-0 z-50 px-5 md:px-8 py-3.5 flex justify-between items-center border-b border-red-200/80 dark:border-slate-800">
+        <div class="flex items-center gap-3">
+            <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-red-600 to-rose-700 text-white flex items-center justify-center text-xl shadow-md shadow-red-600/20">
+                🇬🇧
+            </div>
+            <div>
+                <h1 class="text-base md:text-lg font-black text-red-800 dark:text-rose-400 leading-tight">امتحان لغة إنجليزية</h1>
+                <p class="text-[11px] text-red-600/70 dark:text-slate-400 font-semibold">English Language Assessment</p>
+            </div>
+        </div>
+
+        <div class="flex items-center gap-2.5">
+            <!-- زر تفعيل وإلغاء الدارك مود -->
+            <button id="themeToggle" onclick="toggleTheme()" class="px-3.5 py-2 rounded-xl bg-red-100/90 hover:bg-red-200/80 text-red-900 dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-amber-300 transition text-xs font-bold flex items-center gap-1.5 border border-red-200/70 dark:border-slate-700 cursor-pointer">
+                <span id="themeIcon">🌙</span>
+                <span id="themeLabel">الوضع الليلي</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- المحتوى الرئيسي -->
+    <main class="max-w-4xl mx-auto p-4 md:p-8 my-2">
+
+        <!-- 1. شاشة تسجيل بيانات الطالب -->
+        <section id="loginScreen" class="bg-white/95 dark:bg-slate-800/95 p-7 md:p-11 rounded-3xl shadow-xl shadow-red-900/5 dark:shadow-black/30 border border-red-200/70 dark:border-slate-700/70 text-center max-w-lg mx-auto my-6">
+            <div class="w-20 h-20 bg-gradient-to-br from-red-100 to-rose-200/70 dark:from-slate-700 dark:to-slate-800 text-red-700 dark:text-rose-400 rounded-3xl flex items-center justify-center text-4xl mx-auto mb-5 shadow-inner border border-red-200/60 dark:border-slate-600">
+                📘
+            </div>
+            <h2 class="text-2xl font-black mb-2 text-red-950 dark:text-white">امتحان لغة إنجليزية</h2>
+            <p class="text-red-800/70 dark:text-slate-400 text-sm mb-6 leading-relaxed">
+                سجّل بياناتك للبدء في حل الأسئلة
+            </p>
+
+            <div class="flex flex-wrap justify-center gap-2 mb-7">
+                <span class="text-xs font-bold text-red-800 dark:text-rose-300 bg-red-100/80 dark:bg-slate-900/90 px-3.5 py-1.5 rounded-full border border-red-200/70 dark:border-slate-700">
+                    ⏱️ المدة: ساعتان (120 دقيقة)
+                </span>
+                <span class="text-xs font-bold text-red-800 dark:text-rose-300 bg-red-100/80 dark:bg-slate-900/90 px-3.5 py-1.5 rounded-full border border-red-200/70 dark:border-slate-700">
+                    📝 25 سؤالاً
+                </span>
+            </div>
+            
+            <div class="space-y-4 text-right">
+                <div>
+                    <label class="block text-xs font-extrabold text-red-900 dark:text-slate-300 mb-1.5 mr-1">اسم الطالب الثلاثي:</label>
+                    <input type="text" id="studentNameInput" placeholder="اكتب اسمك الكامل هنا..." class="w-full px-5 py-3.5 rounded-2xl border border-red-200 dark:border-slate-600 bg-red-50/40 dark:bg-slate-900/80 focus:outline-none focus:ring-2 focus:ring-red-500 transition text-center text-base font-bold">
+                </div>
+                <div>
+                    <label class="block text-xs font-extrabold text-red-900 dark:text-slate-300 mb-1.5 mr-1">رقم الهاتف:</label>
+                    <input type="tel" id="studentPhoneInput" placeholder="01xxxxxxxxx" class="w-full px-5 py-3.5 rounded-2xl border border-red-200 dark:border-slate-600 bg-red-50/40 dark:bg-slate-900/80 focus:outline-none focus:ring-2 focus:ring-red-500 transition text-center text-base font-bold font-mono">
+                </div>
+                <button type="button" onclick="startExam()" class="w-full mt-3 bg-gradient-to-l from-red-700 via-red-600 to-rose-600 hover:from-red-800 hover:to-rose-700 active:scale-[0.99] text-white py-4 rounded-2xl font-extrabold text-lg transition duration-200 shadow-lg shadow-red-600/25 flex items-center justify-center gap-2 cursor-pointer">
+                    <span>ابدأ الامتحان</span>
+                    <span>🚀</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- 2. شاشة الاختبار الرئيسية -->
+        <section id="examScreen" class="hidden space-y-5">
+            <!-- شريط معلومات علوي -->
+            <div class="bg-white/95 dark:bg-slate-800/95 p-4 rounded-2xl shadow-sm border border-red-200/80 dark:border-slate-700 flex flex-wrap justify-between items-center gap-3">
+                <div class="flex items-center gap-2.5">
+                    <div class="w-9 h-9 rounded-xl bg-red-100 dark:bg-slate-700 text-red-700 dark:text-rose-400 flex items-center justify-center text-base">
+                        👤
+                    </div>
+                    <div>
+                        <span id="studentHeaderName" class="font-extrabold text-red-950 dark:text-slate-100 block text-sm">الطالب: ---</span>
+                        <span id="studentHeaderPhone" class="text-xs text-red-600/80 dark:text-slate-400 font-mono">---</span>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-2.5 flex-wrap">
+                    <!-- زر عرض الأسئلة / Show Questions -->
+                    <button id="toggleMapBtn" type="button" onclick="toggleQuestionsMap()" class="px-4 py-2 rounded-xl bg-red-100 hover:bg-red-200 text-red-900 dark:bg-slate-700 dark:hover:bg-slate-600 dark:text-slate-100 text-xs font-extrabold transition flex items-center gap-1.5 border border-red-200/80 dark:border-slate-600 cursor-pointer">
+                        <span>🗺️</span>
+                        <span id="toggleMapText">عرض الأسئلة | Show Questions</span>
+                    </button>
+
+                    <div class="font-extrabold text-red-800 dark:text-rose-300 bg-red-50 dark:bg-slate-900 px-3.5 py-2 rounded-xl text-xs md:text-sm border border-red-200/70 dark:border-slate-700" id="currentQuestionIndicator">
+                        السؤال 1 من 25
+                    </div>
+
+                    <div id="timerDisplay" class="bg-gradient-to-l from-red-700 to-red-600 text-white px-4 py-2 rounded-xl font-bold text-xs md:text-sm shadow-sm flex items-center gap-1.5">
+                        ⏳ <span class="font-mono">120:00</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- خريطة الأسئلة القابلة للفتح والإغلاق -->
+            <div id="questionsMapPanel" class="hidden bg-white/95 dark:bg-slate-800/95 p-5 rounded-2xl shadow-md border border-red-200/80 dark:border-slate-700 transition-all">
+                <div class="flex flex-wrap justify-between items-center gap-2 mb-3">
+                    <span class="text-xs font-extrabold text-red-900 dark:text-slate-200">خريطة الأسئلة (25 سؤالاً) — اضغط للانتقال:</span>
+                    <div class="flex items-center gap-3 text-[11px] font-bold text-red-800/80 dark:text-slate-400">
+                        <span class="flex items-center gap-1"><i class="w-2.5 h-2.5 rounded-full bg-red-600 inline-block"></i> الحالي</span>
+                        <span class="flex items-center gap-1"><i class="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block"></i> مُجاب</span>
+                        <span class="flex items-center gap-1"><i class="w-2.5 h-2.5 rounded-full bg-red-100 border border-red-300 inline-block"></i> غير مُجاب</span>
+                    </div>
+                </div>
+                <div id="questionsMap" class="grid grid-cols-5 sm:grid-cols-10 md:grid-cols-13 gap-2">
+                    <!-- أزرار الأسئلة -->
+                </div>
+            </div>
+
+            <!-- حاوية عرض السؤال -->
+            <div id="questionContainer" class="bg-white/95 dark:bg-slate-800/95 p-6 md:p-8 rounded-3xl shadow-md shadow-red-900/5 dark:shadow-black/20 border border-red-200/80 dark:border-slate-700 min-h-[290px]">
+                <!-- السؤال والخيارات -->
+            </div>
+
+            <!-- أزرار التنقل التفاعلية -->
+            <div class="flex justify-between items-center pt-1">
+                <button id="prevBtn" type="button" onclick="prevQuestion()" class="bg-white hover:bg-red-50 dark:bg-slate-800 dark:hover:bg-slate-700 text-red-900 dark:text-slate-200 px-6 py-3.5 rounded-2xl font-bold transition border border-red-200/80 dark:border-slate-700 disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-2 shadow-sm cursor-pointer">
+                    <span>⬅️</span>
+                    <span>السابق</span>
+                </button>
+                
+                <div id="nextStepContainer">
+                    <button id="nextBtn" type="button" onclick="nextQuestion()" class="bg-gradient-to-l from-red-700 to-red-600 hover:from-red-800 hover:to-red-700 text-white px-7 py-3.5 rounded-2xl font-bold transition shadow-md shadow-red-600/20 flex items-center gap-2 cursor-pointer">
+                        <span>التالي</span>
+                        <span>✨ ➡️</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. شاشة عرض نتيجة الطالب أولاً ثم زر التالي للتقييم -->
+        <section id="resultScreen" class="hidden bg-white/95 dark:bg-slate-800/95 p-7 md:p-11 rounded-3xl shadow-xl shadow-red-900/5 dark:shadow-black/30 border border-red-200/80 dark:border-slate-700 max-w-2xl mx-auto my-6 text-center">
+            <div class="w-20 h-20 bg-gradient-to-br from-emerald-100 to-teal-100 dark:from-emerald-950 dark:to-teal-950 text-emerald-600 dark:text-emerald-400 rounded-3xl flex items-center justify-center text-4xl mx-auto mb-4 border border-emerald-200 dark:border-emerald-800 shadow-inner">
+                🏆
+            </div>
+            <h2 class="text-2xl font-black text-red-950 dark:text-white mb-1">نتيجة الامتحان</h2>
+            <p id="resultStudentInfo" class="text-xs md:text-sm font-bold text-red-700/80 dark:text-rose-400 mb-6"></p>
+
+            <!-- بطاقة الدرجة -->
+            <div class="bg-gradient-to-br from-red-50 via-rose-50/70 to-red-100/60 dark:from-slate-900 dark:via-slate-900 dark:to-slate-800 p-6 rounded-3xl border border-red-200/80 dark:border-slate-700 mb-6">
+                <div class="text-xs font-extrabold text-red-800/80 dark:text-slate-400 mb-2">الدرجة النهائية للطالب</div>
+                <div id="finalScoreDisplay" class="text-4xl md:text-5xl font-black text-red-700 dark:text-rose-400 font-mono mb-2">0 / 34</div>
+                <div id="scorePercentageDisplay" class="inline-block text-xs font-extrabold px-4 py-1.5 rounded-full bg-white dark:bg-slate-800 text-red-800 dark:text-rose-300 border border-red-200/70 dark:border-slate-700 mb-4">
+                    النسبة المئوية: 0%
+                </div>
+
+                <div class="grid grid-cols-2 gap-3 max-w-sm mx-auto text-xs font-extrabold pt-2 border-t border-red-200/60 dark:border-slate-700">
+                    <div class="bg-emerald-100/70 dark:bg-emerald-950/50 text-emerald-800 dark:text-emerald-300 py-2.5 px-3 rounded-2xl">
+                        ✅ إجابات صحيحة: <span id="correctCountDisplay" class="font-mono">0</span>
+                    </div>
+                    <div class="bg-rose-100/70 dark:bg-rose-950/50 text-rose-800 dark:text-rose-300 py-2.5 px-3 rounded-2xl">
+                        ❌ إجابات خاطئة: <span id="wrongCountDisplay" class="font-mono">0</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- أزرار مساعدة -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 mb-7">
+                <a id="gmailSendBtn" href="#" target="_blank" class="bg-red-600 hover:bg-red-700 text-white py-3 px-4 rounded-xl font-bold text-xs transition flex items-center justify-center gap-1.5">
+                    <span>📧</span>
+                    <span>فتح الجيميل</span>
+                </a>
+                <a id="whatsappSendBtn" href="#" target="_blank" class="bg-emerald-600 hover:bg-emerald-700 text-white py-3 px-4 rounded-xl font-bold text-xs transition flex items-center justify-center gap-1.5">
+                    <span>💬</span>
+                    <span>واتساب</span>
+                </a>
+                <button type="button" onclick="copyReport()" class="bg-red-100 hover:bg-red-200 text-red-950 dark:bg-slate-700 dark:hover:bg-slate-600 dark:text-slate-100 py-3 px-4 rounded-xl font-bold text-xs transition flex items-center justify-center gap-1.5 cursor-pointer">
+                    <span>📋</span>
+                    <span>نسخ التقرير</span>
+                </button>
+            </div>
+
+            <!-- زر التالي للانتقال إلى شاشة تقييم الامتحان -->
+            <button type="button" onclick="goToEvaluationScreen()" class="w-full bg-gradient-to-l from-red-700 via-red-600 to-rose-600 hover:from-red-800 hover:to-rose-700 text-white py-4 px-6 rounded-2xl font-extrabold text-base transition shadow-lg shadow-red-600/25 flex items-center justify-center gap-2 cursor-pointer">
+                <span>التالي: تقييم الامتحان</span>
+                <span>✨ ➡️</span>
+            </button>
+        </section>
+
+        <!-- 4. شاشة تقييم الامتحان -->
+        <section id="evaluationScreen" class="hidden bg-white/95 dark:bg-slate-800/95 p-7 md:p-11 rounded-3xl shadow-xl shadow-red-900/5 dark:shadow-black/30 border border-red-200/80 dark:border-slate-700 max-w-2xl mx-auto my-6">
+            <div class="flex items-center justify-between border-b border-red-200/70 dark:border-slate-700 pb-4 mb-6">
+                <div>
+                    <h2 class="text-xl md:text-2xl font-black text-red-950 dark:text-white">⭐ تقييم الامتحان</h2>
+                    <p id="evalStudentSubtitle" class="text-xs font-bold text-red-700/75 dark:text-slate-400 mt-1"></p>
+                </div>
+                <button type="button" onclick="backToResultScreen()" class="px-3.5 py-2 rounded-xl bg-red-100 hover:bg-red-200 text-red-900 dark:bg-slate-700 dark:hover:bg-slate-600 dark:text-slate-100 text-xs font-bold transition cursor-pointer">
+                    ⬅️ النتيجة
+                </button>
+            </div>
+
+            <div class="bg-red-50/60 dark:bg-slate-900/70 p-5 md:p-6 rounded-2xl border border-red-200/70 dark:border-slate-700 space-y-5 text-right">
+                <!-- مستوى الصعوبة -->
+                <div>
+                    <label class="block text-xs font-extrabold text-red-900 dark:text-slate-300 mb-2">1. مستوى صعوبة الامتحان:</label>
+                    <div id="difficultyOptions" class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                        <button type="button" onclick="selectRating('difficulty', 'سهل', this)" class="diff-btn py-2.5 px-3 rounded-xl text-xs font-bold border border-red-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-red-100/60 transition cursor-pointer">😊 سهل</button>
+                        <button type="button" onclick="selectRating('difficulty', 'متوسط', this)" class="diff-btn py-2.5 px-3 rounded-xl text-xs font-bold border border-red-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-red-100/60 transition cursor-pointer">⚖️ متوسط</button>
+                        <button type="button" onclick="selectRating('difficulty', 'صعب', this)" class="diff-btn py-2.5 px-3 rounded-xl text-xs font-bold border border-red-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-red-100/60 transition cursor-pointer">🔥 صعب</button>
+                        <button type="button" onclick="selectRating('difficulty', 'متدرج من السهل للصعب', this)" class="diff-btn py-2.5 px-3 rounded-xl text-xs font-bold border border-red-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-red-100/60 transition cursor-pointer">📈 متدرج</button>
+                    </div>
+                </div>
+
+                <!-- تقييم الأفكار -->
+                <div>
+                    <label class="block text-xs font-extrabold text-red-900 dark:text-slate-300 mb-2">2. مستوى الأفكار والأسئلة:</label>
+                    <div id="ideasOptions" class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                        <button type="button" onclick="selectRating('ideas', 'أفكار ممتازة ومفيدة جداً', this)" class="idea-btn py-2.5 px-3 rounded-xl text-xs font-bold border border-red-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-red-100/60 transition cursor-pointer">💡 ممتازة ومفيدة جداً</button>
+                        <button type="button" onclick="selectRating('ideas', 'أفكار جيدة ومباشرة', this)" class="idea-btn py-2.5 px-3 rounded-xl text-xs font-bold border border-red-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-red-100/60 transition cursor-pointer">👍 جيدة ومباشرة</button>
+                        <button type="button" onclick="selectRating('ideas', 'تحتاج لمراجعة أعمق', this)" class="idea-btn py-2.5 px-3 rounded-xl text-xs font-bold border border-red-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-red-100/60 transition cursor-pointer">🔍 تحتاج مراجعة</button>
+                    </div>
+                </div>
+
+                <!-- التقييم العام -->
+                <div>
+                    <label class="block text-xs font-extrabold text-red-900 dark:text-slate-300 mb-2">3. التقييم العام للامتحان:</label>
+                    <div id="overallOptions" class="flex flex-wrap gap-2">
+                        <button type="button" onclick="selectRating('overall', 'ممتاز (5/5)', this)" class="overall-btn py-2 px-3.5 rounded-xl text-xs font-bold border border-red-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-red-100/60 transition cursor-pointer">⭐⭐⭐⭐⭐ ممتاز</button>
+                        <button type="button" onclick="selectRating('overall', 'جيد جداً (4/5)', this)" class="overall-btn py-2 px-3.5 rounded-xl text-xs font-bold border border-red-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-red-100/60 transition cursor-pointer">⭐⭐⭐⭐ جيد جداً</button>
+                        <button type="button" onclick="selectRating('overall', 'مقبول (3/5)', this)" class="overall-btn py-2 px-3.5 rounded-xl text-xs font-bold border border-red-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-red-100/60 transition cursor-pointer">⭐⭐⭐ مقبول</button>
+                    </div>
+                </div>
+
+                <!-- رأي إضافي -->
+                <div>
+                    <label class="block text-xs font-extrabold text-red-900 dark:text-slate-300 mb-1.5">4. رأيك أو ملاحظاتك على الامتحان:</label>
+                    <textarea id="studentFeedbackInput" rows="3" placeholder="اكتب تقييمك أو رأيك في الأسئلة والأفكار..." class="w-full p-3.5 rounded-xl border border-red-200 dark:border-slate-700 bg-white dark:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-red-500 text-sm"></textarea>
+                </div>
+
+                <button type="button" onclick="submitEvaluation()" id="sendEvalBtn" class="w-full bg-gradient-to-l from-red-700 to-red-600 hover:from-red-800 hover:to-red-700 text-white py-3.5 rounded-2xl font-extrabold text-sm transition shadow-md shadow-red-600/20 flex items-center justify-center gap-2 cursor-pointer">
+                    <span>إرسال التقييم</span>
+                    <span>📨</span>
+                </button>
+                <p id="evalStatusMsg" class="hidden text-xs font-extrabold text-emerald-700 dark:text-emerald-400 text-center pt-1"></p>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- كود التشغيل -->
+    <script>
+        // إعدادات EmailJS وبريد المعلم
+        const teacherEmail = "medozakrey1@gmail.com";
+        const emailjsPublicKey = "0gjud3G2OU9xziiAc";
+        const emailjsServiceId = "service_ph07yuc";
+        const emailjsTemplateId = "template_0205j8d";
+
+        emailjs.init({ publicKey: emailjsPublicKey });
+
+        // مصفوفة الأسئلة الـ 25 بالضبط مع تحديد الأسئلة الصعبة بدرجتين (points: 2)
+        const questions = [
+            { id: 1, points: 1, text: "1-we went to school......time,but before we entered we had bought water and food.", options: ["in", "on", "at", "for"], answer: 0 },
+            { id: 2, points: 1, text: "2-....... Christmas Eve,we bought some toys.", options: ["on", "in", "at", "since"], answer: 0 },
+            { id: 3, points: 1, text: "3-.....the evening of monday,we went to cinema.", options: ["on", "in", "at", "since"], answer: 0 },
+            { id: 4, points: 1, text: "4-we drove.....the city,when we arrived there we found many shops.", options: ["to", "towards", "forward", "next to"], answer: 0 },
+            { id: 5, points: 1, text: "5-we drove....the city,but we missed the road.", options: ["towards", "to", "next to", "behind"], answer: 0 },
+            { id: 6, points: 1, text: "6-we had many proplems,but....the end we could solve it.", options: ["in", "at", "on", "while"], answer: 0 },
+            { id: 7, points: 1, text: "7-the weather is very cold.the temperature is.......zero.", options: ["under", "below", "less", "a and b"], answer: 1 },
+            { id: 8, points: 2, text: "8-if the money ,i had..... enough,i would have bought a car.", options: ["was", "were", "had been", "been"], answer: 2 },
+            { id: 9, points: 2, text: "9-if i had studied well,i would....a doctor now.", options: ["be", "have been", "had been", "no article"], answer: 0 },
+            { id: 10, points: 2, text: "10-if i had written work,i would......", options: ["have finished it", "finish", "finish it", "have finished"], answer: 2 },
+            { id: 11, points: 2, text: "11-if i ate,i wouldn't...... hungry yesterday.", options: ["have been", "be", "being", "a&b"], answer: 0 },
+            { id: 12, points: 2, text: "12-which sentence is grammatically correct...", options: ["However clever she is,she couldn't pass the exam.", "she is clever, however she couldn't pass the exam.", "she is clever however that she couldn't pass the exam", "Clever as was she,she couldn't pass the exam ."], answer: 0 },
+            { id: 13, points: 1, text: "13-The exhausted passengers would like ........ somewhere comfortable while waiting for their delayed train.", options: ["resting", "rest", "to rest", "to resting"], answer: 2 },
+            { id: 14, points: 1, text: "14-The audience stopped ........ when the speaker announced that the ceremony was about to begin.", options: ["talk", "talking", "to talk", "to talking"], answer: 1 },
+            { id: 15, points: 1, text: "15-The passengers were instructed to remain ........ their seats while the aircraft was preparing to land.", options: ["in", "on", "at", "over"], answer: 0 },
+            { id: 16, points: 1, text: "16-The museum guide explained that the ancient coins had remained buried ........ the ground for hundreds of years.", options: ["above", "across", "over", "beneath"], answer: 3 },
+            { id: 17, points: 1, text: "17-The factory operates continuously, with different teams working ........ the night to maintain production.", options: ["since", "throughout", "by", "until"], answer: 1 },
+            { id: 18, points: 2, text: "18-The new employee was asked to report ........ the head office at nine o'clock on her first working day.", options: ["in", "on", "to", "into"], answer: 2 },
+            { id: 19, points: 1, text: "19-A scientist uses a digital model to predict how a new bridge might behave during strong winds. What is the main benefit of this approach?", options: ["Avoiding all engineering calculations", "Replacing every real-world safety test", "Guaranteeing that no problems will occur", "Testing possible risks before construction"], answer: 3 },
+            { id: 20, points: 2, text: "20- The expression 'strike a balance' means to ........", options: ["give equal attention to every task regardless of importance", "avoid making any decision", "find a suitable middle point between competing needs", "choose one activity and abandon all others"], answer: 2},
+            { id: 21, points: 2, text: "21-which sentence has a dangling modifier.", options: ["Having studied his lessons,he went out.", "Built from many years,the house described as ancient.", "being expensive,the phone was bought", "attacking the harvest, insects were harmful"], answer: 2 },
+            { id: 22, points: 2, text: "22-dr.Magdy Yacoup dedicated his life.....peopl", options: ["to help", "helping", "help", "to helping"], answer: 3 },
+            { id: 23, points: 1, text: "23-The rescue team had to make its way ........ a narrow underground passage before reaching the trapped workers.", options: ["across", "through", "along", "over"], answer: 1 },
+            { id: 24, points: 2, text: "24-i met many people who are", options: ["high ranked", "high ranking", "highly ranked", "highly ranking"], answer: 1 },
+            { id: 25, points: 1, text: "25-my cars needs....", options: ["to be washed", "to wash", "washing", "to washing"], answer: 2 }
+        ];
+
+        const totalMaxScore = questions.reduce((sum, q) => sum + q.points, 0);
+
+        let currentQuestionIndex = 0;
+        let studentAnswers = {};
+        let studentName = "";
+        let studentPhone = "";
+        let timerInterval;
+        let timeLeft = 120 * 60; // ساعتان (120 دقيقة)
+        let isMapOpen = false;
+        let generatedReportText = "";
+        let totalScore = 0;
+        let correctCount = 0;
+        let wrongCount = 0;
+        let submittedAt = "";
+
+        let examRating = {
+            difficulty: "غير محدد",
+            ideas: "غير محدد",
+            overall: "غير محدد"
+        };
+
+        // فتح وإغلاق خريطة الأسئلة عند الضغط على "عرض الأسئلة | Show Questions"
+        function toggleQuestionsMap() {
+            isMapOpen = !isMapOpen;
+            const panel = document.getElementById("questionsMapPanel");
+            const label = document.getElementById("toggleMapText");
+            if (isMapOpen) {
+                panel.classList.remove("hidden");
+                label.textContent = "إخفاء الأسئلة | Hide Questions";
+                renderQuestionMap();
+            } else {
+                panel.classList.add("hidden");
+                label.textContent = "عرض الأسئلة | Show Questions";
+            }
+        }
+
+        // بدء الاختبار
+        function startExam() {
+            const nameInput = document.getElementById("studentNameInput").value.trim();
+            const phoneInput = document.getElementById("studentPhoneInput").value.trim();
+            
+            if(!nameInput) {
+                alert("برجاء إدخال اسم الطالب الثلاثي أولاً!");
+                return;
+            }
+            if(!phoneInput || phoneInput.length < 8) {
+                alert("برجاء إدخال رقم هاتف صحيح!");
+                return;
+            }
+
+            studentName = nameInput;
+            studentPhone = phoneInput;
+            
+            document.getElementById("studentHeaderName").textContent = `الطالب: ${studentName}`;
+            document.getElementById("studentHeaderPhone").textContent = `📱 ${studentPhone}`;
+            
+            document.getElementById("loginScreen").classList.add("hidden");
+            document.getElementById("examScreen").classList.remove("hidden");
+            
+            startTimer();
+            renderQuestion();
+        }
+
+        // المؤقت التنازلي (ساعتان)
+        function startTimer() {
+            const timerEl = document.querySelector("#timerDisplay span");
+            timerInterval = setInterval(() => {
+                let minutes = Math.floor(timeLeft / 60);
+                let seconds = timeLeft % 60;
+                timerEl.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+                if(timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    submitExam();
+                }
+                timeLeft--;
+            }, 1000);
+        }
+
+        // خريطة التنقل بين الأسئلة
+        function renderQuestionMap() {
+            const mapContainer = document.getElementById("questionsMap");
+            let html = "";
+            questions.forEach((q, idx) => {
+                let isAnswered = studentAnswers[q.id] !== undefined;
+                let isCurrent = idx === currentQuestionIndex;
+                
+                let btnClass = "h-9 text-xs font-extrabold rounded-xl flex items-center justify-center transition border cursor-pointer ";
+                if(isCurrent) {
+                    btnClass += "bg-red-600 text-white border-red-600 shadow-sm";
+                } else if(isAnswered) {
+                    btnClass += "bg-emerald-500 text-white border-emerald-500";
+                } else {
+                    btnClass += "bg-red-50/80 dark:bg-slate-700/80 text-red-900 dark:text-slate-200 border-red-200/80 dark:border-slate-600 hover:bg-red-100";
+                }
+
+                html += `<button type="button" onclick="jumpToQuestion(${idx})" class="${btnClass}">${idx + 1}</button>`;
+            });
+            mapContainer.innerHTML = html;
+        }
+
+        function jumpToQuestion(idx) {
+            currentQuestionIndex = idx;
+            renderQuestion();
+        }
+
+        // عرض السؤال الحالي (مع إظهار الدرجة فقط بدون كلمة سؤال متقدم)
+        function renderQuestion() {
+            const q = questions[currentQuestionIndex];
+            document.getElementById("currentQuestionIndicator").textContent = `السؤال ${currentQuestionIndex + 1} من ${questions.length}`;
+            
+            const letters = ['a', 'b', 'c', 'd'];
+            const pointsText = q.points === 2 ? "درجتان" : "درجة واحدة";
+
+            let html = `
+                <div class="flex justify-between items-center mb-5 pb-3 border-b border-red-100 dark:border-slate-700/80">
+                    <span class="bg-red-100/80 text-red-800 dark:bg-slate-700 dark:text-rose-300 text-xs font-extrabold px-3 py-1 rounded-lg border border-red-200/70 dark:border-slate-600">
+                        الدرجة: ${pointsText}
+                    </span>
+                    <span class="text-xs font-bold text-red-500/80 dark:text-slate-400 font-mono">Q${q.id} / ${questions.length}</span>
+                </div>
+                <h3 class="ltr-text text-lg md:text-xl font-semibold mb-6 leading-relaxed text-slate-900 dark:text-white">${q.text}</h3>
+                <div class="space-y-3 ltr-text">
+            `;
+            
+            q.options.forEach((opt, idx) => {
+                let isChecked = studentAnswers[q.id] === idx;
+                let borderClass = isChecked 
+                    ? "border-red-600 bg-red-50/90 dark:bg-rose-950/35 dark:border-rose-500 shadow-xs" 
+                    : "border-red-200/70 dark:border-slate-700 hover:bg-red-50/50 dark:hover:bg-slate-700/40";
+
+                html += `
+                    <label class="flex items-center gap-3.5 p-4 rounded-2xl border ${borderClass} cursor-pointer transition">
+                        <input type="radio" name="q_${q.id}" value="${idx}" ${isChecked ? 'checked' : ''} onchange="saveAnswer(${q.id}, ${idx})" class="w-4 h-4 accent-red-600">
+                        <span class="font-bold text-red-700 dark:text-rose-400">${letters[idx]}-</span>
+                        <span class="text-base font-medium">${opt}</span>
+                    </label>
+                `;
+            });
+            html += `</div>`;
+
+            document.getElementById("questionContainer").innerHTML = html;
+            
+            let nextContainer = document.getElementById("nextStepContainer");
+            if(currentQuestionIndex === questions.length - 1) {
+                nextContainer.innerHTML = `<button type="button" onclick="submitExam()" class="bg-gradient-to-l from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white px-7 py-3.5 rounded-2xl font-extrabold transition shadow-lg shadow-emerald-600/20 flex items-center gap-2 cursor-pointer"><span>تسليم الامتحان</span><span>🏁</span></button>`;
+            } else {
+                nextContainer.innerHTML = `<button type="button" id="nextBtn" onclick="nextQuestion()" class="bg-gradient-to-l from-red-700 to-red-600 hover:from-red-800 hover:to-red-700 text-white px-7 py-3.5 rounded-2xl font-bold transition shadow-md shadow-red-600/20 flex items-center gap-2 cursor-pointer"><span>التالي</span><span>✨ ➡️</span></button>`;
+            }
+            
+            document.getElementById("prevBtn").disabled = currentQuestionIndex === 0;
+            if (isMapOpen) {
+                renderQuestionMap();
+            }
+        }
+
+        function saveAnswer(qId, val) {
+            studentAnswers[qId] = val;
+            renderQuestion();
+        }
+
+        function nextQuestion() {
+            if(currentQuestionIndex < questions.length - 1) {
+                currentQuestionIndex++;
+                renderQuestion();
+            }
+        }
+
+        function prevQuestion() {
+            if(currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                renderQuestion();
+            }
+        }
+
+        // الانتقال من شاشة النتيجة إلى شاشة التقييم
+        function goToEvaluationScreen() {
+            document.getElementById("resultScreen").classList.add("hidden");
+            document.getElementById("evaluationScreen").classList.remove("hidden");
+            document.getElementById("evalStudentSubtitle").textContent = `الطالب: ${studentName} • الدرجة: ${totalScore} / ${totalMaxScore}`;
+        }
+
+        // العودة إلى شاشة النتيجة
+        function backToResultScreen() {
+            document.getElementById("evaluationScreen").classList.add("hidden");
+            document.getElementById("resultScreen").classList.remove("hidden");
+        }
+
+        // اختيار عناصر تقييم الامتحان وتفعيل التحديد المرئي بوضوح
+        function selectRating(category, value, clickedBtn) {
+            examRating[category] = value;
+
+            const selectorMap = {
+                difficulty: '.diff-btn',
+                ideas: '.idea-btn',
+                overall: '.overall-btn'
+            };
+
+            document.querySelectorAll(selectorMap[category]).forEach(btn => {
+                btn.classList.remove('rating-selected');
+            });
+
+            if (clickedBtn) {
+                clickedBtn.classList.add('rating-selected');
+            }
+            updateShareLinks();
+        }
+
+        function buildFullReport(includeEvaluation = false) {
+            const notes = document.getElementById("studentFeedbackInput")?.value.trim() || "لا توجد ملاحظات إضافية";
+            const scoreSummary = `${totalScore} / ${totalMaxScore}`;
+
+            const letters = ['a', 'b', 'c', 'd'];
+            let detailsLines = [];
+            questions.forEach(q => {
+                let ansIdx = studentAnswers[q.id];
+                let isCorrect = ansIdx === q.answer;
+                let ansText = ansIdx !== undefined ? `${letters[ansIdx]}- ${q.options[ansIdx]}` : "لم يُجب";
+                let statusMark = isCorrect ? `✅ (+${q.points})` : `❌ (الصحيح: ${letters[q.answer]}- ${q.options[q.answer]})`;
+                detailsLines.push(`س${q.id}: ${ansText} | ${statusMark}`);
+            });
+
+            let evalSection = "";
+            if (includeEvaluation) {
+                evalSection =
+`
+تقييم الامتحان:
+- مستوى الصعوبة: ${examRating.difficulty}
+- مستوى الأفكار: ${examRating.ideas}
+- التقييم العام: ${examRating.overall}
+- رأي الطالب: ${notes}
+-------------------------`;
+            }
+
+            return `امتحان لغة إنجليزية
+-------------------------
+اسم الطالب: ${studentName}
+رقم الهاتف: ${studentPhone}
+الدرجة: ${scoreSummary}
+التاريخ: ${submittedAt}
+-------------------------${evalSection}
+تفاصيل الإجابات:
+${detailsLines.join('\n')}`;
+        }
+
+        function updateShareLinks() {
+            const scoreSummary = `${totalScore} / ${totalMaxScore}`;
+            const reportText = buildFullReport(true);
+            generatedReportText = reportText;
+
+            const emailSubject = encodeURIComponent(`امتحان لغة إنجليزية - ${studentName} (${scoreSummary})`);
+            const emailBody = encodeURIComponent(reportText);
+
+            document.getElementById("gmailSendBtn").href = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(teacherEmail)}&su=${emailSubject}&body=${emailBody}`;
+            document.getElementById("whatsappSendBtn").href = `https://wa.me/?text=${emailBody}`;
+        }
+
+        // تسليم الامتحان وعرض النتيجة أولاً
+        function submitExam() {
+            clearInterval(timerInterval);
+            
+            const letters = ['a', 'b', 'c', 'd'];
+            totalScore = 0;
+            correctCount = 0;
+            wrongCount = 0;
+            let detailsLines = [];
+
+            questions.forEach(q => {
+                let ansIdx = studentAnswers[q.id];
+                let isCorrect = ansIdx === q.answer;
+                if(isCorrect) {
+                    totalScore += q.points;
+                    correctCount++;
+                } else {
+                    wrongCount++;
+                }
+                let ansText = ansIdx !== undefined ? `${letters[ansIdx]}- ${q.options[ansIdx]}` : "لم يُجب";
+                let statusMark = isCorrect ? `✅ (+${q.points})` : `❌ (الصحيح: ${letters[q.answer]}- ${q.options[q.answer]})`;
+                detailsLines.push(`س${q.id}: ${ansText} | ${statusMark}`);
+            });
+
+            const percentage = Math.round((totalScore / totalMaxScore) * 100);
+            submittedAt = new Date().toLocaleString();
+            const scoreSummary = `${totalScore} / ${totalMaxScore}`;
+            const detailsText = detailsLines.join('\n');
+
+            document.getElementById("finalScoreDisplay").textContent = `${totalScore} / ${totalMaxScore}`;
+            document.getElementById("scorePercentageDisplay").textContent = `النسبة المئوية: ${percentage}%`;
+            document.getElementById("correctCountDisplay").textContent = correctCount;
+            document.getElementById("wrongCountDisplay").textContent = wrongCount;
+            document.getElementById("resultStudentInfo").textContent = `${studentName} • ${studentPhone}`;
+
+            generatedReportText = buildFullReport(false);
+            updateShareLinks();
+
+            document.getElementById("examScreen").classList.add("hidden");
+            document.getElementById("resultScreen").classList.remove("hidden");
+
+            emailjs.send(emailjsServiceId, emailjsTemplateId, {
+                to_email: teacherEmail,
+                student_name: studentName,
+                student_phone: studentPhone,
+                score: scoreSummary,
+                submitted_at: submittedAt,
+                subject: `امتحان لغة إنجليزية - ${studentName} (${scoreSummary})`,
+                answers_report: detailsText,
+                message: generatedReportText
+            }).catch((err) => {
+                console.error("EmailJS Error:", err);
+            });
+        }
+
+        // إرسال تقييم الطالب للامتحان على نفس الجيميل
+        function submitEvaluation() {
+            const notes = document.getElementById("studentFeedbackInput").value.trim() || "لا توجد ملاحظات إضافية";
+            const scoreSummary = `${totalScore} / ${totalMaxScore}`;
+            const fullReportWithEval = buildFullReport(true);
+            generatedReportText = fullReportWithEval;
+            updateShareLinks();
+
+            const statusMsg = document.getElementById("evalStatusMsg");
+            const btn = document.getElementById("sendEvalBtn");
+            btn.disabled = true;
+            btn.classList.add("opacity-70");
+
+            const evalSummaryMessage =
+`تقييم الامتحان من الطالب: ${studentName} (${studentPhone})
+الدرجة: ${scoreSummary}
+مستوى الصعوبة: ${examRating.difficulty}
+مستوى الأفكار: ${examRating.ideas}
+التقييم العام: ${examRating.overall}
+رأي الطالب: ${notes}`;
+
+            emailjs.send(emailjsServiceId, emailjsTemplateId, {
+                to_email: teacherEmail,
+                student_name: studentName,
+                student_phone: studentPhone,
+                score: scoreSummary,
+                submitted_at: new Date().toLocaleString(),
+                subject: `تقييم امتحان لغة إنجليزية - ${studentName} (${examRating.overall})`,
+                answers_report: evalSummaryMessage,
+                message: fullReportWithEval
+            }).then(() => {
+                statusMsg.classList.remove("hidden");
+                statusMsg.className = "text-xs font-extrabold text-emerald-700 dark:text-emerald-400 text-center pt-1";
+                statusMsg.textContent = "تم إرسال تقييمك بنجاح.";
+                btn.disabled = false;
+                btn.classList.remove("opacity-70");
+            }).catch((err) => {
+                console.error("Evaluation EmailJS Error:", err);
+                statusMsg.classList.remove("hidden");
+                statusMsg.className = "text-xs font-extrabold text-red-700 dark:text-rose-400 text-center pt-1";
+                statusMsg.textContent = "تعذّر الإرسال التلقائي، يمكنك استخدام أزرار المشاركة.";
+                btn.disabled = false;
+                btn.classList.remove("opacity-70");
+            });
+        }
+
+        function copyReport() {
+            navigator.clipboard.writeText(generatedReportText).then(() => {
+                alert("تم نسخ التقرير بنجاح.");
+            });
+        }
+
+        // التبديل بين الوضع الليلي (Dark Mode) والوضع النهاري الأحمر (Red Light Mode)
+        function toggleTheme() {
+            const html = document.documentElement;
+            const themeIcon = document.getElementById("themeIcon");
+            const themeLabel = document.getElementById("themeLabel");
+            
+            if(html.classList.contains('light')) {
+                html.classList.remove('light');
+                html.classList.add('dark');
+                themeIcon.textContent = "❤️";
+                themeLabel.textContent = "الوضع الأحمر";
+            } else {
+                html.classList.remove('dark');
+                html.classList.add('light');
+                themeIcon.textContent = "🌙";
+                themeLabel.textContent = "الوضع الليلي";
+            }
+        }
+    </script>
+</body>
+</html>
